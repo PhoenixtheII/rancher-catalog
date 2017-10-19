@@ -26,8 +26,6 @@ services:
       POSTGRES_PASSWORD: ${postgres_password}
     tty: true
     stdin_open: true
-    labels:
-      io.rancher.sidekicks: postgres-data
     volumes:
       - postgres-data:/var/lib/postgresql/data/pgdata
 
