@@ -21,19 +21,19 @@ catalog:
       description: "Postgres Database"
       label: "Postgres Database"
       required: true
-      default: "bamboo"
+      default: "bitbucket"
       type: "string"
     - variable: postgres_user
       description: "Postgres User"
       label: "Postgres User"
       required: true
-      default: "bamboo"
+      default: "bitbucket"
       type: "string"
     - variable: postgres_password
       description: "Postgres Password"
       label: "Postgres Password"
       required: true
-      default: "bamboo"
+      default: "bitbucket"
       type: "string"
 
 services:
