@@ -51,9 +51,13 @@ services:
 
   bitbucket:
     scale: 1
-    start_on_create: true
+    health_check:
+      port: 7990
+      interval: 2000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
 
   bitbucket-data:
     scale: 1
-    start_on_create: true
 
