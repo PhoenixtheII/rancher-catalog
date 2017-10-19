@@ -1,21 +1,52 @@
 version: '2'
 
 services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.3
+    environment:
+      - cluster.name: docker-cluster
+      - bootstrap.memory_lock: true
+      - http.host: 0.0.0.0
+      - transport.host: 0.0.0.0
+      - discovery.type: zen
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    mem_limit: 1g
+    ports:
+      - 9200:9200
+      - 9300:9300
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - bitbucket
+
   bitbucket-server-lb:
     image: rancher/load-balancer-service
     links:
       - bitbucket
     ports:
       - ${Bitbucket_PORT}:7990
+      - 7999:7999
 
   bitbucket:
     image: atlassian/bitbucket-server:${BITBUCKET_VERSION}
     volumes:
-      - bitbucket-${INSTANCE_NAME}-data:/var/atlassian/application-data/bitbucket
       - bitbucket-shared-data:/var/atlassian/application-data/bitbucket/shared
-    volume_driver: rancher-nfs
     links:
       - postgres
+    networks:
+      - bitbucket
+    environment:
+      - ELASTICSEARCH_ENABLED: false
+      - HAZELCAST_NETWORK_MULTICAST: true
+      - HAZELCAST_GROUP_NAME: bitbucket
+      - HAZELCAST_GROUP_PASSWORD: bitbucket
 
   postgres:
     image: postgres:latest
@@ -34,3 +65,14 @@ volumes:
     driver: rancher-nfs
   postgres-data:
     driver: rancher-nfs
+
+networks:
+  bitbucket:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "true"
+      ipam:
+        driver: default
+        config:
+          - subnet: 172.18.0.0/16
+            gateway: 172.18.0.1

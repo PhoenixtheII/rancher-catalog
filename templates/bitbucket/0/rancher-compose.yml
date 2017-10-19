@@ -37,7 +37,22 @@ catalog:
       type: "string"
 
 services:
+  postgres:
+    health_check:
+      port: 5432
+      interval: 2000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
 
+  elasticsearch:
+    scale: 1
+    health_check:
+      port: 9200
+      interval: 2000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
 
   bitbucket:
     scale: 1
