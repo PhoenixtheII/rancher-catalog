@@ -42,12 +42,16 @@ services:
     scale: 1
     start_on_create: true
 
- bitbucket-server-lb:
-    image: rancher/load-balancer-service
-    links:
-      - bamboo-server
-    ports:
-      - ${Bitbucket_PORT}:7990
+  bitbucket-server-lb:
+    scale: 1
+    load_balancer_config:
+      haproxy_config: {}
+    health_check:
+      port: 42
+      interval: 2000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
 
   bitbucket-data:
     scale: 1
