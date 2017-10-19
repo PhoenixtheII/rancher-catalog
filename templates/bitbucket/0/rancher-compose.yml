@@ -38,10 +38,6 @@ catalog:
 
 services:
 
-  bitbucket:
-    scale: 1
-    start_on_create: true
-
   bitbucket-server-lb:
     scale: 1
     load_balancer_config:
@@ -52,6 +48,10 @@ services:
       unhealthy_threshold: 3
       healthy_threshold: 2
       response_timeout: 2000
+
+  bitbucket:
+    scale: 1
+    start_on_create: true
 
   bitbucket-data:
     scale: 1
