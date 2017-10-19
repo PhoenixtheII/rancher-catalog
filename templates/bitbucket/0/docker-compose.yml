@@ -4,11 +4,10 @@ services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.3
     environment:
-      cluster.name: docker-cluster
-      bootstrap.memory_lock: true
-      http.host: 0.0.0.0
-      transport.host: 0.0.0.0
-      discovery.type: zen
+      cluster.name: 'docker-cluster'
+      bootstrap.memory_lock: 'true'
+      http.host: '0.0.0.0'
+      transport.host: '0.0.0.0'
       ES_JAVA_OPTS: -Xms512m -Xmx512m
     ulimits:
       memlock:
@@ -43,15 +42,15 @@ services:
     networks:
       - bitbucket
     environment:
-      ELASTICSEARCH_ENABLED: false
-      HAZELCAST_NETWORK_MULTICAST: true
-      HAZELCAST_GROUP_NAME: bitbucket
-      HAZELCAST_GROUP_PASSWORD: bitbucket
+      ELASTICSEARCH_ENABLED: 'false'
+      HAZELCAST_NETWORK_MULTICAST: 'true'
+      HAZELCAST_GROUP_NAME: 'bitbucket'
+      HAZELCAST_GROUP_PASSWORD: 'bitbucket'
 
   postgres:
     image: postgres:latest
     environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
+      PGDATA: '/var/lib/postgresql/data/pgdata'
       POSTGRES_DB: ${postgres_db}
       POSTGRES_USER: ${postgres_user}
       POSTGRES_PASSWORD: ${postgres_password}
@@ -69,10 +68,8 @@ volumes:
 networks:
   bitbucket:
     driver: bridge
-    driver_opts:
-      com.docker.network.enable_ipv6: "true"
-      ipam:
-        driver: default
-        config:
-          - subnet: 172.18.0.0/16
-            gateway: 172.18.0.1
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1
