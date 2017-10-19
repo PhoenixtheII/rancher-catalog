@@ -9,7 +9,7 @@ services:
       http.host: 0.0.0.0
       transport.host: 0.0.0.0
       discovery.type: zen
-      "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
     ulimits:
       memlock:
         soft: -1
