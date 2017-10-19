@@ -11,12 +11,43 @@ catalog:
       default: 80
       required: true
       type: int
+    - variable: BITBUCKET_VERSION
+      description: "Version of Bitbucket Server. Check https://www.atlassian.com/software/bitbucket/download?os=linux for current version."
+      label: "Bitbucket Version"
+      required: true
+      default: "5.4.1"
+      type: "string"
+    - variable: postgres_db
+      description: "Postgres Database"
+      label: "Postgres Database"
+      required: true
+      default: "bamboo"
+      type: "string"
+    - variable: postgres_user
+      description: "Postgres User"
+      label: "Postgres User"
+      required: true
+      default: "bamboo"
+      type: "string"
+    - variable: postgres_password
+      description: "Postgres Password"
+      label: "Postgres Password"
+      required: true
+      default: "bamboo"
+      type: "string"
 
 services:
 
   bitbucket:
     scale: 1
     start_on_create: true
+
+ bitbucket-server-lb:
+    image: rancher/load-balancer-service
+    links:
+      - bamboo-server
+    ports:
+      - ${Bitbucket_PORT}:7990
 
   bitbucket-data:
     scale: 1

@@ -1,19 +1,25 @@
 version: '2'
 
 services:
+  bitbucket-server-lb:
+    image: rancher/load-balancer-service
+    links:
+      - bitbucket
+    ports:
+      - ${Bitbucket_PORT}:7990
 
   bitbucket:
-    image: atlassian/bitbucket-server:5.4.1
+    image: atlassian/bitbucket-server:${BITBUCKET_VERSION}
     volumes_from:
       - bitbucket-data
-    ports:
-      - ${BITBUCKET_PORT}:7990
+    links:
+      - postgres
     labels:
       io.rancher.sidekicks: bitbucket-data
       io.rancher.container.hostname_override: container_name
 
   bitbucket-data:
-    image: atlassian/bitbucket-server:5.4.1
+    image: atlassian/bitbucket-server:${BITBUCKET_VERSION}
     entrypoint:
       - /bin/true
     volumes:
@@ -22,3 +28,23 @@ services:
       io.rancher.container.start_once: 'true'
       io.rancher.container.hostname_override: container_name
 
+  postgres-data:
+    image: busybox
+    labels:
+      io.rancher.container.start_once: true
+    volumes:
+      - /var/lib/postgresql/data/pgdata
+
+  postgres:
+    image: postgres:latest
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_DB: ${postgres_db}
+      POSTGRES_USER: ${postgres_user}
+      POSTGRES_PASSWORD: ${postgres_password}
+    tty: true
+    stdin_open: true
+    labels:
+      io.rancher.sidekicks: postgres-data
+    volumes_from:
+      - postgres-data
