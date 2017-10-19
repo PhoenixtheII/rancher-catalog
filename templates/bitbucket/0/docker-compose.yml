@@ -11,7 +11,9 @@ services:
   bitbucket:
     image: atlassian/bitbucket-server:${BITBUCKET_VERSION}
     volumes:
-      - bitbucket-data:/var/atlassian/application-data/bitbucket
+      - bitbucket-${INSTANCE_NAME}-data:/var/atlassian/application-data/bitbucket
+      - bitbucket-shared-data:/var/atlassian/application-data/bitbucket/shared
+    volume_driver: rancher-nfs
     links:
       - postgres
 
@@ -28,7 +30,7 @@ services:
       - postgres-data:/var/lib/postgresql/data/pgdata
 
 volumes:
-  bitbucket-data:
+  bitbucket-shared-data:
     driver: rancher-nfs
   postgres-data:
     driver: rancher-nfs
