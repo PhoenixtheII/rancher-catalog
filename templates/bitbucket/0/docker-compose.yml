@@ -14,8 +14,6 @@ services:
       - bitbucket-data:/var/atlassian/application-data/bitbucket
     links:
       - postgres
-    labels:
-      io.rancher.container.hostname_override: container_name
 
   postgres:
     image: postgres:latest
