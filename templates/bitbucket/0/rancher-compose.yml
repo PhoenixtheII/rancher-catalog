@@ -42,10 +42,6 @@ services:
     scale: 1
     start_on_create: true
 
-  bitbucket-data:
-    scale: 1
-    start_on_create: true
-
   bitbucket-server-lb:
     scale: 1
     load_balancer_config:
