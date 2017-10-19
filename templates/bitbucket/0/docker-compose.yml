@@ -4,12 +4,12 @@ services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.3
     environment:
-      - cluster.name: docker-cluster
-      - bootstrap.memory_lock: true
-      - http.host: 0.0.0.0
-      - transport.host: 0.0.0.0
-      - discovery.type: zen
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      cluster.name: docker-cluster
+      bootstrap.memory_lock: true
+      http.host: 0.0.0.0
+      transport.host: 0.0.0.0
+      discovery.type: zen
+      "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
         soft: -1
@@ -43,10 +43,10 @@ services:
     networks:
       - bitbucket
     environment:
-      - ELASTICSEARCH_ENABLED: false
-      - HAZELCAST_NETWORK_MULTICAST: true
-      - HAZELCAST_GROUP_NAME: bitbucket
-      - HAZELCAST_GROUP_PASSWORD: bitbucket
+      ELASTICSEARCH_ENABLED: false
+      HAZELCAST_NETWORK_MULTICAST: true
+      HAZELCAST_GROUP_NAME: bitbucket
+      HAZELCAST_GROUP_PASSWORD: bitbucket
 
   postgres:
     image: postgres:latest
